@@ -2,10 +2,13 @@
  
 Welcome to the **Hotel Cancellation Prediction Project**! 😄🏨💻🎆
 
-In this machine learning project, we intend to use past hotel reservation data to create a predictive model capable of forecasting hotel cancellations. The hospitality business, particularly hotel management, is always challenged by the need to successfully manage bookings and optimize income streams in the face of variable demand and changing client habits. By leveraging the power of machine learning, we hope to equip hoteliers with a useful tool for anticipating and mitigating potential cancellations, ultimately improving operational efficiency and guest happiness.
+# Business Problem and Objectives
+This is a semester-long project for the Machine Learning for Business Application course at Carnegie Mellon University. In this project, we intend to use past hotel reservation data to create a predictive model capable of forecasting hotel cancellations. The hospitality business, particularly hotel management, is always challenged by the need to successfully manage bookings and optimize income streams in the face of variable demand and changing client habits. By leveraging the power of machine learning, we hope to equip hoteliers with a useful tool for anticipating and mitigating potential cancellations, ultimately improving operational efficiency and guest happiness.
 
+# Data
 The 'hotel_booking.csv' file contains the dataset at the heart of this project, which is a thorough record of historical hotel reservations, each with a binary indicator indicating whether the reservation was canceled or successfully fulfilled. We hope to identify relevant patterns and insights that can inform the predictive modeling process by examining numerous parameters such as booking lead time, arrival date, length of stay, and consumer demographics.
 
+# Project Highlights
 Throughout the project, we will take the following critical steps:
 
 1. Data Exploration and Preprocessing: We will do extensive exploratory data analysis (EDA) to acquire insight into the properties and distributions of our dataset. To prepare the data for modeling, it will be necessary to identify missing values, deal with outliers, and encode categorical variables.
