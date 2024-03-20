@@ -1,4 +1,4 @@
-# Hotel Cacnellation Rate Prediction Project: Machine Learning for Business Application (CMU MSBA)
+# Hotel Cancellation Rate Prediction Project: Machine Learning for Business Application (CMU MSBA)
  
 Welcome to the **Hotel Cancellation Prediction Project**! 😄🏨💻🎆
 
