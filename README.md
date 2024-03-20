@@ -1,4 +1,4 @@
-# hotel_cancellation
+# Hotel Cacnellation Rate Prediction Project: Machine Learning for Business Application (CMU MSBA)
  
 Welcome to the Hotel Cancellation Prediction Project! In this machine learning project, we intend to use past hotel reservation data to create a predictive model capable of forecasting hotel cancellations. The hospitality business, particularly hotel management, is always challenged by the need to successfully manage bookings and optimize income streams in the face of variable demand and changing client habits. By leveraging the power of machine learning, we hope to equip hoteliers with a useful tool for anticipating and mitigating potential cancellations, ultimately improving operational efficiency and guest happiness.
 
