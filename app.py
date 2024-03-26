@@ -1,5 +1,7 @@
+import io  
 import pandas as pd
 from fastapi import FastAPI, File, UploadFile
+from sklearn.preprocessing import StandardScaler
 from pydantic import BaseModel
 import joblib
 import numpy as np
@@ -20,7 +22,11 @@ class InputFeatures(BaseModel):
 async def predict_from_csv(file: UploadFile = File(...)):
     # Read the uploaded CSV file
     contents = await file.read()
-    df = pd.read_csv(contents)
+
+    # Create a file-like object from the bytes read
+    file_like_object = io.BytesIO(contents)
+
+    df = pd.read_csv(file_like_object)
 
     # Data cleaning (if needed)
     # Drop rows with missing values or impute missing values
@@ -32,6 +38,7 @@ async def predict_from_csv(file: UploadFile = File(...)):
 
     # Scaling numerical features
     # Scale numerical features if necessary using StandardScaler
+    scaler = StandardScaler()
     df_scaled = scaler.fit_transform(df_cleaned)
 
     # Make predictions
