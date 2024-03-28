@@ -15,19 +15,65 @@ columns = pd.read_csv("/Users/zhuyuchen/Desktop/CMU MSBA/Mini 4/Machine Learning
 
 # Define request body model
 class InputFeatures(BaseModel):
+    hotel: str
     lead_time: int
     arrival_date_year: int
+    arrival_date_month: str
+    arrival_date_week_number: int
+    arrival_date_day_of_month: int
+    stays_in_weekend_nights: int
+    stays_in_week_nights: int
+    adults: int
+    children: int
+    babies: int
+    meal: str
+    country: str
+    market_segment: str
+    distribution_channel: str
+    is_repeated_guest: int
+    previous_cancellations: int
+    previous_bookings_not_canceled: int
+    reserved_room_type: str
+    assigned_room_type: str
+    booking_changes: int
+    deposit_type: str
+    days_in_waiting_list: int
+    customer_type: str
+    adr: float
+    required_car_parking_spaces: int
+    total_of_special_requests: int
+
+class Prediction(BaseModel):
+    prediction: bool
     # Define other features here...
+
+def convert_json_to_csv(json_data):
+    # Convert JSON to DataFrame
+    df = pd.DataFrame(json_data)
+    # Assuming the DataFrame is converted to CSV format as a string
+    csv_data = df.to_csv(index=False)
+    return csv_data
 
 @app.post("/predict/")
 async def predict_from_csv(file: UploadFile = File(...)):
-    # Read the uploaded CSV file
+    # Read the uploaded file contents
     contents = await file.read()
-
-    # Create a file-like object from the bytes read
-    file_like_object = io.BytesIO(contents)
-
-    df = pd.read_csv(file_like_object)
+    
+    # Check file extension
+    file_extension = file.filename.split(".")[-1]
+    
+    if file_extension == "csv":
+        # Create a file-like object from the bytes read
+        file_like_object = io.BytesIO(contents)
+        # Read the CSV file into a DataFrame
+        df = pd.read_csv(file_like_object)
+    
+    elif file_extension == "json":
+        # Convert JSON to DataFrame
+        json_data = json.loads(contents)
+        df = convert_json_to_csv(json_data)
+    else:
+        return {"error": "Unsupported file format. Only CSV and JSON are supported."}
 
     # Data cleaning (if needed)
     features = ['hotel',
@@ -94,7 +140,7 @@ async def predict_from_csv(file: UploadFile = File(...)):
     predictions = model.predict(merged_df)
 
     # Return predictions
-    return {"predictions": predictions.tolist()}
+    return {"Prediction completed successfully": predictions.tolist()}
 
     
 if __name__ == "__main__":
