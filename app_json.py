@@ -11,10 +11,10 @@ import numpy as np
 app = FastAPI()
 
 # Load the machine learning model
-model = joblib.load("/Users/zhuyuchen/Desktop/CMU MSBA/Mini 4/Machine Learning For Business Applications/logistic_regression_model.pkl")
+model = joblib.load("/Users/gana/Desktop/r/logistic_regression_model.pkl")
 
 # Load the column names for variables used in model
-columns = pd.read_csv("/Users/zhuyuchen/Desktop/CMU MSBA/Mini 4/Machine Learning For Business Applications/hotel cancellation/data_columns.csv")
+columns = pd.read_csv("/Users/gana/Desktop/r/data_columns.csv")
 
 # Define classes for categorical variables
 class HotelType(str, Enum):
@@ -38,6 +38,9 @@ class Month(Enum):
 class WeekOfYear(Enum):
     pass
 
+weekofyear = range(1, 54)
+WeekOfYear = Enum('WeekOfYear', {str(i): i for i in weekofyear})
+
 class Meal(Enum):
     BB = 'BB'
     FB = 'FB'
@@ -47,29 +50,6 @@ class Meal(Enum):
 
 class Country(Enum):
     pass
-
-class MarketSegment(Enum):
-    pass
-
-class Distribution(Enum):
-    pass
-
-class RoomType(Enum):
-    pass
-
-class DepositType(Enum):
-    NoDeposit = 'No Deposit'
-    Refundable = 'Refundable'
-    NonRefundable = "Non Refund"
-
-class CustomerType(Enum):
-    Transient = 'Transient'
-    Contract = 'Contract'
-    TransientParty = 'Transient-Party'
-    Group = 'Group'
-
-for i in range(1, 54):
-    setattr(WeekOfYear, f"Week{i}", i)
 
 unique_countries = ['PRT', 'GBR', 'USA', 'ESP', 'IRL', 'FRA', 'ROU', 'NOR', 'OMN',
        'ARG', 'POL', 'DEU', 'BEL', 'CHE', 'CN', 'GRC', 'ITA', 'NLD',
@@ -92,24 +72,42 @@ unique_countries = ['PRT', 'GBR', 'USA', 'ESP', 'IRL', 'FRA', 'ROU', 'NOR', 'OMN
        'SLV', 'DMA', 'PYF', 'GUY', 'LCA', 'ATA', 'GTM', 'ASM', 'MRT',
        'NCL', 'KIR', 'SDN', 'ATF', 'SLE', 'LAO']
 
-for country_code in unique_countries:
-    setattr(Country, country_code, country_code)
+Country = Enum('Country', {country: country for country in unique_countries})
 
-market_segment = ['Direct', 'Corporate', 'Online TA', 'Offline TA/TO', 
+class MarketSegment(Enum):
+    pass
+
+market_segment = ['Direct', 'Corporate', 'Online TA', 'Offline TA/TO',
                   'Complementary', 'Groups', 'Undefined', 'Aviation']
 
-for segments in market_segment:
-    setattr(MarketSegment, segments, segments)
+MarketSegment = Enum('MarketSegment', {segments: segments for segments in market_segment})
+
+class Distribution(Enum):
+    pass
 
 distribution_channels = ['Direct', 'Corporate', 'TA/TO', 'Undefined', 'GDS']
 
-for channels in distribution_channels:
-    setattr(Distribution, channels, channels)
+Distribution = Enum('Distribution', {channels: channels for channels in distribution_channels})
+
+class RoomType(Enum):
+    pass
 
 room_types = ['C', 'A', 'D', 'E', 'G', 'F', 'H', 'L', 'P', 'B']
 
-for types in room_types:
-    setattr(RoomType, types, types)
+RoomType = Enum('RoomType', {types: types for types in room_types})
+
+class DepositType(Enum):
+    NoDeposit = 'No Deposit'
+    Refundable = 'Refundable'
+    NonRefundable = "Non Refund"
+
+class CustomerType(Enum):
+    Transient = 'Transient'
+    Contract = 'Contract'
+    TransientParty = 'Transient-Party'
+    Group = 'Group'
+
+
 
 # Define request body model
 class InputFeatures(BaseModel):
@@ -117,7 +115,7 @@ class InputFeatures(BaseModel):
     lead_time: int
     arrival_date_year: int
     arrival_date_month: Month
-    arrival_date_week_number: int
+    arrival_date_week_number: WeekOfYear
     arrival_date_day_of_month: int
     stays_in_weekend_nights: int
     stays_in_week_nights: int
