@@ -11,10 +11,10 @@ import numpy as np
 app = FastAPI()
 
 # Load the machine learning model
-model = joblib.load("/Users/gana/Desktop/r/logistic_regression_model.pkl")
+model = joblib.load("/Users/zhuyuchen/Desktop/CMU MSBA/Mini 4/Machine Learning For Business Applications/logistic_regression_model.pkl")
 
 # Load the column names for variables used in model
-columns = pd.read_csv("/Users/gana/Desktop/r/data_columns.csv")
+columns = pd.read_csv("/Users/zhuyuchen/Desktop/CMU MSBA/Mini 4/Machine Learning For Business Applications/hotel cancellation/data_columns.csv")
 
 # Define classes for categorical variables
 class HotelType(str, Enum):
@@ -141,10 +141,10 @@ class InputFeatures(BaseModel):
 
 class Prediction(BaseModel):
     prediction: bool
-    # Define other features here...
+    info: str
 
 # Define API endpoint
-@app.post("/predict/")
+@app.post("/predict/", response_model=Prediction)
 async def predict(features: InputFeatures):
     input_data = features.dict() # Convert InputFeatures object to dictionary
     df_cleaned = pd.DataFrame([input_data])  # Create DataFrame from dictionary
@@ -156,7 +156,7 @@ async def predict(features: InputFeatures):
                     'deposit_type', 'customer_type']
 
     # Create dummy variables for the categorical column
-    dummy_variables = pd.get_dummies(df_cleaned[categorical_columns], drop_first=True)
+    dummy_variables = pd.get_dummies(df_cleaned[categorical_columns])
 
     # Concatenate dummy variables with the original DataFrame
     df_cleaned= pd.concat([df_cleaned, dummy_variables], axis=1)
@@ -174,12 +174,11 @@ async def predict(features: InputFeatures):
 
     # Fill missing values with 0
     merged_df.fillna(0, inplace=True)
-
-    # Make predictions
-    predictions = model.predict(merged_df)
+    
+    predictions = Prediction(prediction = model.predict(merged_df), info = "Prediction completed successfully")
 
     # Return predictions
-    return {"Prediction completed successfully": predictions.tolist()}
+    return predictions
     
 if __name__ == "__main__":
     import uvicorn
